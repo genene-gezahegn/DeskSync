@@ -9,13 +9,16 @@ async function seedAdmin() {
   }
 
   const db = new Pool({
-    connectionString: process.env.DATABASE_URL,
-  });
+  connectionString: process.env.DATABASE_URL,
+});
 
-  try {
-    const email = 'admin@desksync.local';
-    const password = 'ChangeMe123!';
-    const hash = await bcrypt.hash(password, 12);
+db.on('error', (err) => {
+  console.error('[PostgreSQL Pool Error]', err.message);
+});
+
+  try {const email = 'admin@desksync.local';
+const password = 'ChangeMe123!';
+const hash = await bcrypt.hash(password, 12);
 
     await db.query(
       `INSERT INTO users (
